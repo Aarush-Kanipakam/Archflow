@@ -1,0 +1,30 @@
+# Node modules
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Mac
+.DS_Store
+
+# Frontend Next.js build output
+frontend/.next/
+frontend/out/
+frontend/build/
+
+# Backend NestJS build output
+backend/dist/
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Prisma
+backend/prisma/*.db
+backend/prisma/*.db-journal
+
+# Logs
+logs
+*.log

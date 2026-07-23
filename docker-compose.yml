@@ -1,0 +1,26 @@
+# ArchFlow AI - Docker Compose
+# This file defines the services (containers) our app needs.
+# For now, just PostgreSQL. Later we could add Redis, etc.
+
+services:
+  # PostgreSQL database
+  # Think of this as "installing Postgres" but in an isolated container
+  postgres:
+    image: postgres:16-alpine    # Use PostgreSQL 16 (alpine = smaller image)
+    container_name: archflow-db
+    restart: unless-stopped       # Auto-restart if it crashes
+    ports:
+      - "5432:5432"              # Map container port 5432 → your machine's port 5432
+    environment:
+      POSTGRES_USER: archflow
+      POSTGRES_PASSWORD: archflow_dev_password
+      POSTGRES_DB: archflow
+    volumes:
+      # This line means: "save database data to a named volume so it
+      # survives container restarts." Without this, you'd lose all data
+      # every time you run `docker compose down`.
+      - postgres_data:/var/lib/postgresql/data
+
+# Named volumes - Docker manages the storage location for you
+volumes:
+  postgres_data:
