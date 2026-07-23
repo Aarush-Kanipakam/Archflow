@@ -20,7 +20,7 @@ ArchFlow AI is built as a **Monorepo** containing two distinct applications that
 ### 2. Backend (NestJS 11)
 - **Framework:** NestJS for a highly opinionated, modular, and scalable enterprise-grade backend architecture based on decorators and dependency injection.
 - **Database:** PostgreSQL running locally via Docker Compose.
-- **ORM:** Prisma for type-safe database queries and schema migrations. We use UUIDs instead of auto-incrementing integers to prevent ID-guessing attacks and simplify distributed system architecture.
+- **ORM:** Prisma for type-safe database queries and schema migrations. We use UUIDs instead of auto-incrementing integers to simplify object identification, prevent predictable IDs, and make client-side object creation easier.
 - **Real-Time Engine:** `socket.io` for bi-directional WebSocket communication.
 
 ---
@@ -41,7 +41,7 @@ The system uses a robust two-token JWT (JSON Web Token) authentication flow to b
 - **Infinite Canvas:** We map the mouse wheel (`onWheel`) to Konva's `stage.scale` and `stage.position`. By using matrix transformations, we can seamlessly zoom in/out at the exact position of the user's cursor.
 
 ### 3. Real-Time Collaboration (WebSockets)
-ArchFlow uses WebSockets to enable Google Docs-style collaboration.
+ArchFlow uses WebSockets to enable real-time collaborative editing.
 - **Rooms:** When a user opens a board, the frontend emits a `board:join` event. The NestJS `BoardsGateway` places their socket into a Socket.IO "Room" specific to that board ID. This ensures users only receive WebSocket updates for the board they are currently viewing.
 - **Optimistic UI:** When User A drags a shape, the frontend updates their screen immediately (optimistically) so there is zero input lag. Once they release the mouse (`onDragEnd`), the frontend emits a `shape:update` event to the backend. The backend updates the PostgreSQL database via Prisma, then broadcasts that change to the WebSocket room.
 - **Rollbacks:** If the server rejects the update (e.g., database constraint failure), it returns an error `ACK`. The frontend catches this and executes a local `undo()` to snap the shape back to its original position.
